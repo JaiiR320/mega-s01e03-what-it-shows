@@ -13,21 +13,25 @@ signature: Jair Meza
   import RenderStamp from '#lib/kb/RenderStamp.svelte';
 </script>
 
-[#4471](/kb/incidents/4471) is marked known, with one fix queued. It holds more than one problem, and
-that fix closes only the first one below.
+[#4471](/kb/incidents/4471) closed on 5 October, but it held more than one problem. Engineering
+settled two of them. The third is still open.
 
 <ProblemTable
   ticket={4471}
   repo="JaiiR320/mega-s01e03-what-it-shows"
-  parser={{ name: 'Shared parser reads dates month first', issue: 1 }}
-  hint={{ name: 'booking-v3 hint prints month first', issue: 2 }}
-  oneDay={{ name: 'Dates move by one day', issue: 3 }}
+  parser={{ name: 'Shared parser reads dates month first', issue: 1, state: 'fixed: parse dd/mm for eu locales' }}
+  hint={{ name: 'booking-v3 hint prints month first', issue: 2, state: "won't fix: booking-v3 form retired" }}
+  oneDay={{ name: 'Dates move by one day', issue: 3, state: 'open: not covered by the update' }}
 />
 
 <Callout kind="warn">
-Do not close #4471 when the parser fix ships. Keep the other two tickets open: their reports look
-like the same bug, and they will keep coming.
+Closing #4471 does not cover the one-day moves. The parser fix changes how day and month are read,
+so it does not explain these reports. Do not tell these reporters it is fixed.
 </Callout>
+
+Hint reports got no code fix: the form that printed the hint is gone. Check that
+`alder.physio`, `copper.studio` and `pale.harbour` have moved off it, because the tenant directory
+in this export still lists them on `booking-v3`.
 
 ## How they were told apart
 

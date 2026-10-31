@@ -4,7 +4,7 @@
   import { groupByCause, uniqueById, type Report } from '#lib/kb/causes';
   import { tenantOf } from '#lib/kb/locales';
 
-  type Problem = { name: string; issue: number };
+  type Problem = { name: string; issue: number; state: string };
   let { ticket, repo, parser, hint, oneDay }: { ticket: number; repo: string; parser: Problem; hint: Problem; oneDay: Problem } = $props();
 
   const rows = $derived(uniqueById(reports as Report[]));
@@ -31,7 +31,7 @@
 
 <table>
   <thead>
-    <tr><th>problem</th><th>reports</th><th>tenants</th><th>seen</th><th>ticket</th></tr>
+    <tr><th>problem</th><th>reports</th><th>tenants</th><th>seen</th><th>ticket</th><th>state</th></tr>
   </thead>
   <tbody>
     {#each problems as p (p.issue)}
@@ -41,6 +41,7 @@
         <td>{new Set(p.reports.map((r) => r.tenant)).size}</td>
         <td>{seen(p.reports)}</td>
         <td><a href="https://github.com/{repo}/issues/{p.issue}">{repo}#{p.issue}</a></td>
+        <td>{p.state}</td>
       </tr>
     {/each}
   </tbody>
