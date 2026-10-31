@@ -1,0 +1,50 @@
+---
+layout: runbook
+title: '#4471 · what the merged reports really are'
+owner: Jair Meza
+status: open
+reviewed: 2026-10-31
+signature: Jair Meza
+---
+
+<script>
+  import ProblemTable from '#lib/kb/ProblemTable.svelte';
+  import Callout from '#lib/kb/Callout.svelte';
+  import RenderStamp from '#lib/kb/RenderStamp.svelte';
+</script>
+
+[#4471](/kb/incidents/4471) is marked known, with one fix queued. It holds more than one problem, and
+that fix closes only the first one below.
+
+<ProblemTable
+  ticket={4471}
+  repo="JaiiR320/mega-s01e03-what-it-shows"
+  parser={{ name: 'Shared parser reads dates month first', issue: 1 }}
+  hint={{ name: 'booking-v3 hint prints month first', issue: 2 }}
+  oneDay={{ name: 'Dates move by one day', issue: 3 }}
+/>
+
+<Callout kind="warn">
+Do not close #4471 when the parser fix ships. Keep the other two tickets open: their reports look
+like the same bug, and they will keep coming.
+</Callout>
+
+## How they were told apart
+
+- **Parser:** a day-first tenant's date comes out with day and month swapped, on every way in
+  except the one below.
+- **Hint:** the same swap, through the form of a tenant on `booking-v3`. The hint tells people to
+  type the month first. The tenant and channel decide this, so it is not visible in the report text.
+- **One day:** the date moves a day, or differs between two readers. A swap cannot do this, so these
+  reports leave `parser`, where the desk filed them by tenant. Time zones are the likely cause, but
+  the export cannot prove it.
+
+## What not to trust
+
+- **Subject lines.** Both swap bugs use the same subjects, which is how
+  [decision 0001](/kb/decisions/0001-dedupe-by-subject) merged them. Changing that rule takes a new
+  decision record.
+- **Intake tags.** Intake guesses from the reporter's browser, not from the tenant.
+- **The raw export.** Its pages overlap, so count by report id.
+
+<RenderStamp {signature} />
